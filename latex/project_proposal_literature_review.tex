@@ -1,0 +1,86 @@
+\typeout{IJCAI--24 Instructions for Authors}
+
+% These are the instructions for authors for IJCAI-24.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+
+% The file ijcai24.sty is a copy from ijcai22.sty
+% The file ijcai22.sty is NOT the same as previous years'
+\usepackage{ijcai24}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[switch]{lineno}
+
+% Comment out this line in the camera-ready submission
+\linenumbers
+
+\urlstyle{same}
+
+
+% PDF Info Is REQUIRED.
+
+% Please leave this \pdfinfo block untouched both for the submission and
+% Camera Ready Copy. Do not include Title and Author information in the pdfinfo section
+\pdfinfo{
+/TemplateVersion (IJCAI.2024.0)
+}
+
+\title{Project Proposal and Literature Review}
+
+
+% Single author syntax
+\author{
+    Alexandre Domingues Andrade
+    \emails
+    alexandrade@student.dei.uc.pt
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Project Proposal}
+
+\subsection{Description}
+
+The use of Large Language Models (LLMs) by end users have significantly increased since the announcement of the ChatGPT by OpenAI, this use increase can lead to spread of miss information if the model hallucinate and the user don't search in multiple sources.
+
+The objective of this project is to reduce the hallucination of the LLMs with knowledge injection from Knowledge Graphs such as DBPedia and benchmark the performance of the enriched LLMs.
+
+\subsection{Goals}
+
+To improve the factual quality of the generated text it is necessary to inject the knowledge in the inference pipeline, in this project two methods will be used.
+
+The first one is user input enrichment, before feeding the input to the model it is introduced data from the knowledge graphs using keywords present in the input. 
+
+The second method involves injecting the data directly in the model, different approaches exits to accomplish this but the objective is to use a pre-trained model and use a adapter based architecture.
+
+In order to evaluate the quality of the solutions, first they will be compared with the model without the architectural modifications and in a question answering benchmark.
+
+\subsection{Checkpoints}
+
+\begin{enumerate}
+	\item October 29
+	\item November 19
+\end{enumerate}
+
+\subsection{Data and Tools}
+
+Dataset - https://ai.google.com/research/NaturalQuestions/dataset
+
+
+\end{document}
