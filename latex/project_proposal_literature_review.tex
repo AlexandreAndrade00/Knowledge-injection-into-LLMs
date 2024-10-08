@@ -61,23 +61,40 @@ style=alphabetic
 
 \maketitle
 
+\section{Literature Review}
+
 \section{Project Proposal}
 
 \subsection{Description}
 
-The use of Large Language Models (LLMs) by end users have significantly increased since the announcement of the ChatGPT by OpenAI, this use increase can lead to spread of miss information if the model hallucinate and the user don't search in multiple sources.
+The use of Large Language Models (LLMs) by end users have significantly increased since the announcement of the ChatGPT by OpenAI. The amount of trust put in the models by the users can lead to spread of miss information because the users are miss-leaded by the models hallucinations.
 
-The objective of this project is to reduce the hallucination of the LLMs with knowledge injection from Knowledge Graphs such as DBPedia and benchmark the performance of the enriched LLMs.
+The objective of this project is to improve the factual data given by the LLMs in its responses, reducing the hallucination and providing sources through knowledge injection from Knowledge Graphs such as Wikidata.
 
 \subsection{Goals}
 
-To improve the factual quality of the generated text it is necessary to inject the knowledge in the inference pipeline, in this project two methods will be used. Both methods don't required to train the pre-trained model or fine-tuning it.
+To improve the factual quality of the generated text, it is necessary to inject the knowledge somewhere in the neural network, in this project two methods will be used. Performance and efficiency wise, it is pretended to spend as little resource as possible, consequently, only pre-trained language models (PLM) will be used giving priority to zero-shot, one-shot, few-shot and adapter based methods.
 
-The first one is user input enrichment, before feeding the input to the model it is introduced data from the knowledge graphs using keywords present in the input. This is a zero-shot method, doesn't require any type of training.
+\subsubsection{First approach}
 
-The second method involves injecting the data directly in the model, different approaches exits to accomplish this but the objective is to use a pre-trained model and use a adapter based architecture.
+The input prompt engineering has inspiration in the work done on \cite{baek2023knowledgeaugmentedlanguagemodelprompting}, the objective of this project is to increment what have been done.
 
-In order to evaluate the quality of the solutions, first they will be compared with the model without the architectural modifications and in a question answering benchmark.
+Before feeding the user question to the PLM, this approach give a prompt to the PLM with contextual information extracted from Knowledge Graphs. It is necessary to identify the entities present in the sentence, to accomplish this, the entities are extracted from the question using BLINK \cite{wu2019zero}. BLINK is a entity linking algorithm that uses the Wikipedia as the knowledge base (entity library). The returned entities have an id and a description, this identification will be used to extract triplets from knowledge graphs and saved them with the question. 
+
+Then, it's necessary to verbalize the extracted triplets, in the paper it was used linear verbalization, but as mentioned, more advanced methods can be used to this task, it will be adopted a heuristics method \cite{oguz-etal-2022-unik}. The triplets extraction lead to an exaggerated amount of context, most of them being irrelevant to the question, so it's necessary a ranking of the information. To rank the verbalized information, it is necessary to measure the relevance of the sentences, BM25 \cite{INR-019} appeared with ground breaking results and since then, multiple works have been done in this area, the RocketQA \cite{ren-etal-2021-rocketqav2} dense retriever based on pre-trained language model (PLM) will be used because of its achieved state-of-art results, when compared to other methods.
+
+At last, the \textit{k} top sentences are prompted to the model and the question is fed.
+
+
+\subsubsection{Second approach}
+
+The second method involves injecting the data directly in the model, using an adapter based architecture. This approach only if the first don't take all available time, so further details will be investigated later.
+
+
+\subsubsection{Benchmarking}
+
+In order to evaluate the quality of the solutions, the will be benchmarked in Natural Questions Benchmark \cite{47761}.
+
 
 \subsection{Checkpoints}
 
@@ -88,17 +105,8 @@ In order to evaluate the quality of the solutions, first they will be compared w
 
 \subsection{Data and Tools}
 
-Dataset - https://ai.google.com/research/NaturalQuestions/dataset
+It will be used the Natural Questions dataset. The work will be done with python, with the PyTorch framework.
 
-\section{Literature Review}
-
-The input enrichment has inspiration in the work done on \cite{baek2023knowledgeaugmentedlanguagemodelprompting}, the objective of this project is to do incremental improvements.
-
-Before feeding the user question to the LLM this approach give a prompt to the LLM with contextual information extracted from Knowledge Graphs. In order to accomplish this, firstly the entities are extracted from the introduced question with BLINK \cite{wu2019zero}, and the triplets found in the knowledge graph that correspond to the entities are extracted and saved with the question.
-
-Then, it's necessary to verbalize the extracted triplets, in the paper it was used linear verbalization, but as mentioned, more advanced methods can be used to this task, it will be adopted a heuristics method \cite{oguz-etal-2022-unik}. To rank the verbalized information, it is necessary to measure the relevance of the sentences, BM25 \cite{INR-019} appeared with ground breaking results and since then multiple works have been done in this area, the RocketQA \cite{ren-etal-2021-rocketqav2} dense retriever based on pre-trained language model (PLM) will be used as result of the state-of-art results achieved when compared to another methods.
-
-The top sentences are prompted to the model and finally the answer it's introduced in the model. 
 
 \printbibliography
 
