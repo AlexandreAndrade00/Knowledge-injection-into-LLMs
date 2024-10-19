@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.10.1)  4 OCT 2024 01:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.10.6)  19 OCT 2024 17:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -390,44 +390,288 @@ Package: lineno 2023/05/20 line numbers on paragraphs v5.3
 \linenoamsmath@ams@eqpen=\count309
 LaTeX Info: Redefining \\ on input line 3180.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 5
-2.
+(/usr/share/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
+
+(/usr/share/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count310
+
+(/usr/share/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+\c@tabx@nest=\count311
+\c@listtotal=\count312
+\c@listcount=\count313
+\c@liststart=\count314
+\c@liststop=\count315
+\c@citecount=\count316
+\c@citetotal=\count317
+\c@multicitecount=\count318
+\c@multicitetotal=\count319
+\c@instcount=\count320
+\c@maxnames=\count321
+\c@minnames=\count322
+\c@maxitems=\count323
+\c@minitems=\count324
+\c@citecounter=\count325
+\c@maxcitecounter=\count326
+\c@savedcitecounter=\count327
+\c@uniquelist=\count328
+\c@uniquename=\count329
+\c@refsection=\count330
+\c@refsegment=\count331
+\c@maxextratitle=\count332
+\c@maxextratitleyear=\count333
+\c@maxextraname=\count334
+\c@maxextradate=\count335
+\c@maxextraalpha=\count336
+\c@abbrvpenalty=\count337
+\c@highnamepenalty=\count338
+\c@lownamepenalty=\count339
+\c@maxparens=\count340
+\c@parenlevel=\count341
+\blx@tempcnta=\count342
+\blx@tempcntb=\count343
+\blx@tempcntc=\count344
+\c@blx@maxsection=\count345
+\blx@maxsegment@0=\count346
+\blx@notetype=\count347
+\blx@parenlevel@text=\count348
+\blx@parenlevel@foot=\count349
+\blx@sectionciteorder@0=\count350
+\blx@sectionciteorderinternal@0=\count351
+\blx@entrysetcounter=\count352
+\blx@biblioinstance=\count353
+\labelnumberwidth=\skip62
+\labelalphawidth=\skip63
+\biblabelsep=\skip64
+\bibitemsep=\skip65
+\bibnamesep=\skip66
+\bibinitsep=\skip67
+\bibparsep=\skip68
+\bibhang=\skip69
+\blx@bcfin=\read2
+\blx@bcfout=\write3
+\blx@langwohyphens=\language7
+\c@mincomprange=\count354
+\c@maxcomprange=\count355
+\c@mincompwidth=\count356
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'alphabetic.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count357
+\c@savedafterword=\count358
+\c@annotator=\count359
+\c@savedannotator=\count360
+\c@author=\count361
+\c@savedauthor=\count362
+\c@bookauthor=\count363
+\c@savedbookauthor=\count364
+\c@commentator=\count365
+\c@savedcommentator=\count366
+\c@editor=\count367
+\c@savededitor=\count368
+\c@editora=\count369
+\c@savededitora=\count370
+\c@editorb=\count371
+\c@savededitorb=\count372
+\c@editorc=\count373
+\c@savededitorc=\count374
+\c@foreword=\count375
+\c@savedforeword=\count376
+\c@holder=\count377
+\c@savedholder=\count378
+\c@introduction=\count379
+\c@savedintroduction=\count380
+\c@namea=\count381
+\c@savednamea=\count382
+\c@nameb=\count383
+\c@savednameb=\count384
+\c@namec=\count385
+\c@savednamec=\count386
+\c@translator=\count387
+\c@savedtranslator=\count388
+\c@shortauthor=\count389
+\c@savedshortauthor=\count390
+\c@shorteditor=\count391
+\c@savedshorteditor=\count392
+\c@labelname=\count393
+\c@savedlabelname=\count394
+\c@institution=\count395
+\c@savedinstitution=\count396
+\c@lista=\count397
+\c@savedlista=\count398
+\c@listb=\count399
+\c@savedlistb=\count400
+\c@listc=\count401
+\c@savedlistc=\count402
+\c@listd=\count403
+\c@savedlistd=\count404
+\c@liste=\count405
+\c@savedliste=\count406
+\c@listf=\count407
+\c@savedlistf=\count408
+\c@location=\count409
+\c@savedlocation=\count410
+\c@organization=\count411
+\c@savedorganization=\count412
+\c@origlocation=\count413
+\c@savedoriglocation=\count414
+\c@origpublisher=\count415
+\c@savedorigpublisher=\count416
+\c@publisher=\count417
+\c@savedpublisher=\count418
+\c@language=\count419
+\c@savedlanguage=\count420
+\c@origlanguage=\count421
+\c@savedoriglanguage=\count422
+\c@pageref=\count423
+\c@savedpageref=\count424
+\shorthandwidth=\skip70
+\shortjournalwidth=\skip71
+\shortserieswidth=\skip72
+\shorttitlewidth=\skip73
+\shortauthorwidth=\skip74
+\shorteditorwidth=\skip75
+\locallabelnumberwidth=\skip76
+\locallabelalphawidth=\skip77
+\localshorthandwidth=\skip78
+\localshortjournalwidth=\skip79
+\localshortserieswidth=\skip80
+\localshorttitlewidth=\skip81
+\localshortauthorwidth=\skip82
+\localshorteditorwidth=\skip83
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+\c@textcitecount=\count425
+\c@textcitetotal=\count426
+\c@textcitemaxnames=\count427
+\c@biburlbigbreakpenalty=\count428
+\c@biburlbreakpenalty=\count429
+\c@biburlnumpenalty=\count430
+\c@biburlucpenalty=\count431
+\c@biburllcpenalty=\count432
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count433
+
+
+Package biblatex Warning: Redefining '\citeauthor'.
+
+
+Package biblatex Warning: Redefining '\citeyear'.
+
+)
+Package biblatex Info: Trying to load bibliography style 'alphabetic'...
+Package biblatex Info: ... file 'alphabetic.bbx' found.
+ (/usr/share/texmf-dist/tex/latex/biblatex/bbx/alphabetic.bbx
+File: alphabetic.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count434
+\c@bbx:relatedtotal=\count435
+))
+Package biblatex Info: Trying to load citation style 'alphabetic'...
+Package biblatex Info: ... file 'alphabetic.cbx' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/cbx/alphabetic.cbx
+File: alphabetic.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-02-20 L3 programming layer (loader) 
+
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count436
+\l__pdf_internal_box=\box56
+))
+Package biblatex Info: ... and expl3
+(biblatex)             2024-02-20 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2024-02-18 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
+))
+\@quotelevel=\count437
+\@quotereset=\count438
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 6
+0.
 
 (/usr/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
-(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count310
-\l__pdf_internal_box=\box56
-)
 (./project_proposal_literature_review.aux)
 \openout1 = `project_proposal_literature_review.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-Package hyperref Info: Link coloring OFF on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+Package hyperref Info: Link coloring OFF on input line 60.
 
 (./project_proposal_literature_review.out)
 (./project_proposal_literature_review.out)
-\@outlinefile=\write3
-\openout3 = `project_proposal_literature_review.out'.
+\@outlinefile=\write4
+\openout4 = `project_proposal_literature_review.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
@@ -435,16 +679,16 @@ Package caption Info: End \AtBeginDocument code.
 
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count311
+\scratchcounter=\count439
 \scratchdimen=\dimen191
 \scratchbox=\box57
-\nofMPsegments=\count312
-\nofMParguments=\count313
+\nofMPsegments=\count440
+\nofMParguments=\count441
 \everyMPshowfont=\toks41
-\MPscratchCnt=\count314
+\MPscratchCnt=\count442
 \MPscratchDim=\dimen192
-\MPnumerator=\count315
-\makeMPintoPDFobject=\count316
+\MPnumerator=\count443
+\makeMPintoPDFobject=\count444
 \everyMPtoPDFconversion=\toks42
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -455,61 +699,85 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(/usr/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout3 = `project_proposal_literature_review.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'project_proposal_literature_review.bbl' found.
+
+
+(./project_proposal_literature_review.bbl)
+Package biblatex Info: Reference section=0 on input line 60.
+Package biblatex Info: Reference segment=0 on input line 60.
 \titlearea=\box58
-\actualheight=\skip62
-LaTeX Font Info:    Trying to load font information for OT1+phv on input line 5
-6.
+\actualheight=\skip84
 
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1phv.fd
-File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
-) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/f
-onts/enc/dvips/base/8r.enc}
+Underfull \hbox (badness 2088) in paragraph at lines 69--71
+\OT1/ptm/m/it/10 ing for Zero-Shot Knowl-edge Graph Ques-tion An-swer-
+ []
 
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fon
+ts/enc/dvips/base/8r.enc}
 
 
 
 ]
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 1
+36.
+ (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 1997) in paragraph at lines 137--137
+\OT1/ptm/m/n/10 fari. \OT1/ptm/m/it/10 Knowledge-Augmented Lan-guage Model
+ []
+
+
+Underfull \hbox (badness 3690) in paragraph at lines 137--137
+\OT1/ptm/m/it/10 Prompt-ing for Zero-Shot Knowl-edge Graph
+ []
+
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
+36.
+(/usr/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [2]
 (./project_proposal_literature_review.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
+Package rerunfilecheck Info: File `project_proposal_literature_review.out' has 
+not changed.
+(rerunfilecheck)             Checksum: 458D1D683590A160351DF5EF6AC52696;1835.
+Package logreq Info: Writing requests to 'project_proposal_literature_review.ru
+n.xml'.
+\openout1 = `project_proposal_literature_review.run.xml'.
 
-
-Package rerunfilecheck Warning: File `project_proposal_literature_review.out' h
-as changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `project_proposal_literature_review.
-out':
-(rerunfilecheck)             Before: E2A8739B9C0685E07439CA213FFED215;659
-(rerunfilecheck)             After:  308BB9B978F95CCF2CDF6DA6007BF8D3;432.
  ) 
 Here is how much of TeX's memory you used:
- 11468 strings out of 476076
- 180916 string characters out of 5793775
- 1937187 words of memory out of 5000000
- 33425 multiletter control sequences out of 15000+600000
- 569711 words of font info for 52 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 75i,5n,79p,571b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{section*.2} has been referenced but does not exist,
- replaced by a fixed one
-
-
-pdfTeX warning (dest): name{section*.1} has been referenced but does not exist,
- replaced by a fixed one
-
-</usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texmf-di
-st/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/time
-s/utmr8a.pfb>
-Output written on project_proposal_literature_review.pdf (1 page, 36651 bytes).
-
+ 18717 strings out of 476033
+ 327730 string characters out of 5792714
+ 1948187 words of memory out of 5000000
+ 40607 multiletter control sequences out of 15000+600000
+ 572154 words of font info for 58 fonts, out of 8000000 for 9000
+ 36 hyphenation exceptions out of 8191
+ 75i,5n,81p,1177b,1290s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-d
+ist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/tim
+es/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on project_proposal_literature_review.pdf (2 pages, 68668 bytes)
+.
 PDF statistics:
- 58 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 118 PDF objects out of 1000 (max. 8388607)
+ 104 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 89 words of extra memory for PDF output out of 10000 (max. 10000000)
 
