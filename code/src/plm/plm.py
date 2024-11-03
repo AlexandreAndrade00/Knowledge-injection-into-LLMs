@@ -8,8 +8,6 @@ class PLM:
         self.__model = model
 
     def inference(self, model_input: str) -> str:
-        spans = self.__refined.process_text(model_input)
-
         messages = [
             {"role": "system",
              "content": "You are a chatbot with the objective of answering user questions concisely!"},
