@@ -17,7 +17,9 @@ class Oracle:
     def answer(self, model_input: str) -> str:
         spans = self.__refined.process_text(model_input)
 
-        verbalized_rdf = [self.__http_requests.get_entity_statements(span.predicted_entity.wikidata_entity_id) for span in
+        verbalized_rdf = [self.__http_requests.get_entity_claims(span.predicted_entity.wikidata_entity_id) for span in
                           spans]
 
-        return self.__model.inference(model_input)
+        print(verbalized_rdf)
+
+        # return self.__model.inference(model_input)
