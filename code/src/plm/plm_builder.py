@@ -14,7 +14,7 @@ class Device(Enum):
 class PLMBuilder:
     model_id: Optional[str] = None
     device: Device = Device.GPU
-    __input_formatter: Callable[[str], object]
+    __input_formatter: Callable[[str, str], object]
 
     def select_model(self, model: str) -> None:
         self.model_id = model
@@ -22,7 +22,7 @@ class PLMBuilder:
     def select_device(self, device: Device) -> None:
         self.device = device
 
-    def set_input_formatter(self, formatter: Callable[[str], object]):
+    def set_input_formatter(self, formatter: Callable[[str, str], object]):
         self.__input_formatter = formatter
 
     def build(self) -> PLM:

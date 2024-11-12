@@ -2,6 +2,7 @@ from refined.inference.processor import Refined
 from plm.plm import PLM
 from http_requests import HttpRequests
 from strsimpy import SorensenDice
+from functools import reduce
 
 
 class Oracle:
@@ -20,7 +21,11 @@ class Oracle:
         self.__question = question
 
     def answer(self) -> str:
-        return self.__model.inference(self.__question)
+        context_list: list[str] = self.__ranked_entities_statements()
+
+        context: str = reduce(lambda s1, s2: f"{s1}\n{s2}\n", context_list)
+
+        return self.__model.inference(self.__question, context)
 
     def __ranked_entities_statements(self) -> list[str]:
         spans = self.__refined.process_text(self.__question)
@@ -46,6 +51,7 @@ class Oracle:
         tuple[str, float]]:
         k = kwargs.get('k', 10)
 
+        # sbert
         ranked_triples: list[tuple[str, float]] = [(triple, SorensenDice().similarity(self.__question, triple)) for
                                                    triple
                                                    in
