@@ -1,21 +1,15 @@
-from plm.plm_builder import PLMBuilder, Device
-from oracle import Oracle
+from benchmarks.nq_benchmark import NaturalQuestionsBenchmark
+from benchmarks.benchmark import Benchmark
+from plm.llama_builder import LlamaBuilder
+from plm.plm import PLM
 
 
 def main():
-    builder = PLMBuilder()
-    builder.select_model("meta-llama/Llama-3.2-3B-Instruct")
-    builder.select_device(Device.CPU)
-    builder.set_input_formatter(lambda model_input, context: [
-        {"role": "system",
-         "content": "You are a chatbot with the objective of answering user questions concisely!"},
-        {"role": "system", "content": f"Use the following sentences to answer the question\n{context}"},
-        {"role": "user", "content": model_input},
-    ])
-    plm = builder.build()
-    oracle = Oracle(plm)
-    oracle.set_question("Where Michael Jackson, the singer, born?")
-    print(oracle.answer())
+    plm: PLM = LlamaBuilder().build()
+
+    nq_bmk = NaturalQuestionsBenchmark(plm)
+    nq_bmk.set_output_path("/home/alexandre/dev/tsln_project/outputs")
+    nq_bmk.run()
 
 
 if __name__ == "__main__":

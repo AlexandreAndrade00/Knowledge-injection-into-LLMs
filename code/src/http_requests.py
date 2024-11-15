@@ -1,3 +1,4 @@
+from SPARQLWrapper import SPARQLWrapper, JSON
 from wikidata.client import Client
 from wikidata.entity import EntityId, Entity
 from wikidata.quantity import Quantity
@@ -5,32 +6,31 @@ from datetime import date
 
 
 class HttpRequests:
+    wikidata_sparql_endpoint: str = "https://query.wikidata.org/sparql"
 
-    @staticmethod
-    def get_entity_claims(entity_id: str) -> list:
-        client = Client()
-        entity: Entity = client.get(EntityId(entity_id), load=True)
+    def get_entity_claims(self, entity_id: str, entity_name: str) -> list:
+        wikidataSPARQL = SPARQLWrapper(self.wikidata_sparql_endpoint,
+                                       agent="QAChatBot/0.1")
+
+        wikidataSPARQL.setReturnFormat(JSON)
+
+        wikidataSPARQL.setQuery(f"""
+            SELECT ?propLabel ?bLabel
+            WHERE
+            {{
+              wd:{entity_id} ?a ?b.
+            
+              SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }} 
+              ?prop wikibase:directClaim ?a .
+              ?prop rdfs:label ?propLabel.  filter(lang(?propLabel) = "en").
+            }}
+        """)
+
+        result = wikidataSPARQL.queryAndConvert()['results']['bindings']
 
         verbalized_claims = []
 
-        for item in entity.lists():
-            for value in item[1]:
-                value_str: str = ''
-
-                if type(value) is str:
-                    value_str = value
-                elif type(value) is Entity:
-                    value_str = value.label["en"]
-                elif type(value) is int:
-                    value_str = str(value)
-                elif type(value) is date:
-                    value_str = value.strftime("%d/%m/%Y, %H:%M:%S")
-                elif type(value) is Quantity:
-                    value_str = str(Quantity)
-                else:
-                    print(f'{type(value)} not supported')
-
-                if value_str != '':
-                    verbalized_claims.append(f"{entity.label} {item[0].label} {value_str}")
+        for item in result:
+            verbalized_claims.append(f"{entity_name} {item["propLabel"]["value"]} {item["bLabel"]["value"]}")
 
         return verbalized_claims

@@ -29,5 +29,9 @@ class PLMBuilder:
         if self.model_id is None:
             raise AttributeError
 
-        return PLM(pipeline("text-generation", model=self.model_id, model_kwargs={"torch_dtype": torch.bfloat16},
-                            device=self.device.value), self.__input_formatter)
+        pipe = pipeline("text-generation", model=self.model_id, model_kwargs={"torch_dtype": torch.bfloat16},
+                        device=self.device.value)
+
+        pipe.tokenizer.pad_token_id = pipe.tokenizer.eos_token_id
+
+        return PLM(pipe, self.__input_formatter)
