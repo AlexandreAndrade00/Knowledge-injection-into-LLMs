@@ -5,7 +5,6 @@ from http_requests import HttpRequests
 from knowledge_mixin import KnowledgeMixin
 import json
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor
 
 
 class Benchmark(ABC, KnowledgeMixin):
@@ -32,12 +31,10 @@ class Benchmark(ABC, KnowledgeMixin):
             with open(self.output_path + "/results.json", "w"):
                 pass
 
-        pool = ThreadPoolExecutor(max_workers=10)
-
         for result in self.model.benchmark(self.data()):
-            pool.submit(lambda: self.self.__write_to_file(result))
+            self.self.__write_to_file(result)
 
     def __write_to_file(self, result):
         print(result, flush=True)
         with open(self.output_path + "/results.json", "a") as fp:
-            json.dump(result, fp)
+            fp.write(result)
