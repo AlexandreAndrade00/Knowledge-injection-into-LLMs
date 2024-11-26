@@ -1,19 +1,21 @@
+import json
+
 from benchmarks.benchmark import Benchmark
 from plm.plm import PLM
 from datasets import load_dataset
 from typing import Optional, Iterable
-from concurrent.futures import ThreadPoolExecutor
 from functools import reduce
+from pathlib import Path as Dir
+from knowledge_mixin import Path
 
 
 class NaturalQuestionsBenchmark(Benchmark):
-
-    def __init__(self, model: PLM):
-        super().__init__(model)
+    def __init__(self, model: PLM, runs: int = -1, use_context: bool = True, hops: int = 1):
+        super().__init__(model, runs, use_context, hops)
         self.dataset = load_dataset("natural_questions", split="train")
 
     @staticmethod
-    def __extract_answer(data) -> Optional[str]:
+    def __extract_answer(data) -> str:
         if len(data["annotations"]["short_answers"][0]["start_token"]) > 0:
             return " ".join(
                 data["document"]["tokens"]["token"][data["annotations"]["short_answers"][0]["start_token"][0]:
@@ -24,21 +26,52 @@ class NaturalQuestionsBenchmark(Benchmark):
         elif data["annotations"]["yes_no_answer"] != "NONE":
             return data["annotations"]["yes_no_answer"]
         else:
-            return None
+            return ""
 
     def data(self) -> Iterable[dict[str, str]]:
-        iterations = 10
-
         for data in self.dataset:
-            if iterations == 0:
+            if self.runs == 0:
                 break
 
-            iterations = iterations - 1
+            if self.runs > 0:
+                super().set_runs(self.runs - 1)
 
             question = data["question"]["text"]
 
-            context_list: list[str] = super().ranked_entities_statements(question)
+            data = {"question": question, "gold": self.__extract_answer(data)}
 
-            context: str = reduce(lambda s1, s2: f"{s1}\n{s2}\n", context_list) if len(context_list) > 0 else ""
+            if self.use_context:
+                context_list: list[Path] = super().ranked_entities_statements(question, hops=self.hops)
 
-            yield {"question": question, "context": context}
+                context: str = reduce(lambda s1, s2: f"{s1}\n{s2}",
+                                      set(map(lambda e: e.verbalized, context_list))) \
+                    if len(context_list) > 0 else ""
+
+                data["context"] = context
+
+            yield data
+
+    def save_data(self) -> None:
+        if self.output_path is None:
+            raise Exception("Output path not set")
+
+        Dir(self.output_path).mkdir(parents=True, exist_ok=True)
+
+        use_comma: bool = False
+
+        with open(self.output_path + "/data.json", "a") as fp:
+            fp.write('[')
+
+            json.dump({"context": self.use_context, "hops": self.hops}, fp)
+
+            fp.write(',')
+
+            for result in self.data():
+                if use_comma:
+                    fp.write(',')
+
+                json.dump(result, fp)
+
+                use_comma = True
+
+            fp.write(']')

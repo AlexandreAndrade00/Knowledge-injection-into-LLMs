@@ -15,8 +15,11 @@ class PLM:
 
         return self.__model(formated_input, max_new_tokens=2048)[0]["generated_text"][-1]["content"]
 
-    def benchmark(self, dataset_w_context: Iterable[dict[str, str]]) -> Iterable[str]:
-        data = list(map(lambda x: self.__input_formatter(x["question"], x["context"]), dataset_w_context))
+    def benchmark(self, dataset_w_context: Iterable[dict[str, str]]) -> Iterable[dict[str, str]]:
+        for elem in dataset_w_context:
+            context: str = elem.get("context", "")
 
-        for elem in data:
-            yield self.__model(elem, max_new_tokens=2048)[0]["generated_text"][-1]
+            result = self.__model(self.__input_formatter(elem["question"], context), max_new_tokens=2048)[0][
+                "generated_text"][-1]['content']
+
+            yield {'question': elem["question"], 'context': context, 'answer': result, 'gold': elem["gold"]}
