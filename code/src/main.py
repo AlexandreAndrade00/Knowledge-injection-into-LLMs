@@ -17,7 +17,7 @@ def main():
     #
     # print(oracle.answer())
 
-    nq_bmk = NaturalQuestionsBenchmark(plm, 1000, use_context=True, hops=2)
+    nq_bmk = NaturalQuestionsBenchmark(plm, 100, use_context=True, hops=2)
     nq_bmk.set_output_path("/home/alexandre/dev/tsln_project/outputs")
     nq_bmk.run()
 

@@ -1,11 +1,13 @@
+import json
 from functools import reduce
 
+from qwikidata.json_dump import WikidataJsonDump
 from strsimpy import SorensenDice
 from refined.inference.processor import Refined
 from SPARQLWrapper import SPARQLWrapper, JSON
 from enum import Enum
-from typing import Optional
-from sentence_transformers import SentenceTransformer, export_optimized_onnx_model
+from typing import Optional, Any
+from sentence_transformers import SentenceTransformer
 
 
 class Type(Enum):
@@ -29,6 +31,7 @@ class Path:
 
 class KnowledgeMixin:
     __wikidata_sparql_endpoint: str = "https://query.wikidata.org/sparql"
+    __wjd_path = "../../wikidata-20190401-all.json.bz2"
     __text_sim_model = SentenceTransformer("all-MiniLM-L6-v2", model_kwargs={"torch_dtype": "bfloat16"})
 
     def ranked_entities_statements(self, question: str, hops: int = 3) -> list[Path]:
@@ -52,7 +55,7 @@ class KnowledgeMixin:
 
         for i in range(hops):
             entities_triples: list[list[Path]] = [
-                self.get_entity_claims(entity) for entity in entities_to_query
+                self.get_entity_claims_sqarql(entity) for entity in entities_to_query
             ]
 
             entities_to_query.clear()
@@ -111,7 +114,7 @@ class KnowledgeMixin:
 
         return ranked_triples[-k:]
 
-    def get_entity_claims(self, entity: Entity) -> list[Path]:
+    def get_entity_claims_sqarql(self, entity: Entity) -> list[Path]:
         wikidataSPARQL = SPARQLWrapper(self.__wikidata_sparql_endpoint,
                                        agent="QAChatBot/0.1")
 
@@ -122,14 +125,14 @@ class KnowledgeMixin:
             WHERE
             {{
               {{
-                wd:Q232737 ?a ?b.
+                wd:{entity.id} ?a ?b.
                 ?b wdt:P31 ?c.
                 ?prop1 wikibase:directClaim ?a .
                 ?prop1 rdfs:label ?prop1Label.  filter(lang(?prop1Label) = "en").
               }}
               UNION
               {{
-                ?d ?e wd:Q232737.
+                ?d ?e wd:{entity.id}.
                 ?d wdt:P31 ?f.
                 ?prop2 wikibase:directClaim ?e .
                 ?prop2 rdfs:label ?prop2Label.  filter(lang(?prop2Label) = "en").
@@ -191,6 +194,34 @@ class KnowledgeMixin:
             triples.append(Path(entities, reduce(lambda s1, s2: f"{s1} {s2}", map(lambda e: e.label, entities), "")))
 
         return triples
+
+    def get_entity_claims_local(self, entity: Entity) -> list[Path]:
+
+        with open(self.__wjd_path, 'r') as fp:
+
+            while True:
+                entity_json = json.loads(fp.readline())
+
+                if entity_json["id"] == entity.id:
+                    break
+
+            claims: dict[str, list] = entity_json["claims"]
+
+            entities_to_explore: list[str] = []
+
+            paths = list[Path]
+
+            for claim_id, claim in claims.items():
+                for snak_id, snak in claim["references"][0]['snaks'].items():
+                    snak = snak[0]
+
+                    if snak["datatype"] == "wikibase-item":
+                        if snak["datavalue"]["type"] == "wikibase-entityid":
+                            entities_to_explore.append(snak["datavalue"]["value"]["id"])
+                    elif snak["datatype"] == "string":
+                        paths.append(Path([entity, Entity(snak_id, '', Type.PROPERTY), Entity(null, )], ''))
+
+        return []
 
 
 def main():
