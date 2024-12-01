@@ -9,6 +9,8 @@ from nltk.translate.bleu_score import sentence_bleu
 from rouge_score import rouge_scorer
 from sentence_transformers import SentenceTransformer
 
+from knowledge_mixin import DataOrigin
+
 
 class Benchmark(ABC, KnowledgeMixin):
     model: PLM
@@ -16,13 +18,25 @@ class Benchmark(ABC, KnowledgeMixin):
     use_context: bool
     output_path: str
     hops: int
+    context_path: Optional[str]
     __text_sim_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-    def __init__(self, model: PLM, runs: int, use_context: bool, hops: int):
+    def __init__(
+        self,
+        model: PLM,
+        runs: int,
+        use_context: bool,
+        hops: int,
+        data_origin: DataOrigin,
+        context_path: str,
+    ):
         self.model = model
         self.runs = runs
         self.use_context = use_context
         self.hops = hops
+        self.context_path = context_path
+        if context_path is None:
+            super().__init__(data_origin)
 
     def set_model(self, model: PLM) -> None:
         self.model = model
@@ -47,7 +61,7 @@ class Benchmark(ABC, KnowledgeMixin):
 
         Path(self.output_path).mkdir(parents=True, exist_ok=True)
         with open(self.output_path + "/results.json", "w") as fp:
-            fp.write('[')
+            fp.write("[")
 
         use_comma: bool = False
 
@@ -57,7 +71,7 @@ class Benchmark(ABC, KnowledgeMixin):
             use_comma = True
 
         with open(self.output_path + "/results.json", "a") as fp:
-            fp.write(']')
+            fp.write("]")
 
     def evaluate(self, data: dict) -> None:
         data["metrics"] = {}
@@ -68,22 +82,26 @@ class Benchmark(ABC, KnowledgeMixin):
         reference_tokenized = nltk.word_tokenize(data["gold"])
         candidate_tokenized = nltk.word_tokenize(data["answer"])
 
-        data["metrics"]["bleu"] = sentence_bleu(reference_tokenized, candidate_tokenized)
+        data["metrics"]["bleu"] = sentence_bleu(
+            reference_tokenized, candidate_tokenized
+        )
 
-        scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+        scorer = rouge_scorer.RougeScorer(["rouge1", "rougeL"], use_stemmer=True)
         scores = scorer.score(data["gold"], data["answer"])
-        data["metrics"]["rouge-1"] = scores['rouge1'].fmeasure
-        data["metrics"]["rouge-L"] = scores['rougeL'].fmeasure
+        data["metrics"]["rouge-1"] = scores["rouge1"].fmeasure
+        data["metrics"]["rouge-L"] = scores["rougeL"].fmeasure
 
         embeddings1 = self.__text_sim_model.encode(data["gold"])
         embeddings2 = self.__text_sim_model.encode(data["answer"])
 
-        data["metrics"]["semantic-similarity"] = self.__text_sim_model.similarity(embeddings1, embeddings2).item()
+        data["metrics"]["semantic-similarity"] = self.__text_sim_model.similarity(
+            embeddings1, embeddings2
+        ).item()
 
     def __write_to_file(self, result: dict[str, str], use_comma: bool):
         # print(result, flush=True)
         with open(self.output_path + "/results.json", "a") as fp:
             if use_comma:
-                fp.write(',')
+                fp.write(",")
 
             json.dump(result, fp)

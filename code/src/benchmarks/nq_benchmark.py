@@ -3,26 +3,45 @@ import json
 from benchmarks.benchmark import Benchmark
 from plm.plm import PLM
 from datasets import load_dataset
-from typing import Optional, Iterable
+from typing import Optional, Iterable, Any
 from functools import reduce
 from pathlib import Path as Dir
 from knowledge_mixin import Path
 
+from knowledge_mixin import DataOrigin
+
 
 class NaturalQuestionsBenchmark(Benchmark):
-    def __init__(self, model: PLM, runs: int = -1, use_context: bool = True, hops: int = 1):
-        super().__init__(model, runs, use_context, hops)
+    def __init__(
+        self,
+        model: PLM,
+        context_path: Optional[str],
+        runs: int = -1,
+        use_context: bool = True,
+        hops: int = 1,
+        data_origin: DataOrigin = DataOrigin.SPARQL,
+    ):
+        super().__init__(model, runs, use_context, hops, data_origin, context_path)
         self.dataset = load_dataset("natural_questions", split="train")
 
     @staticmethod
     def __extract_answer(data) -> str:
         if len(data["annotations"]["short_answers"][0]["start_token"]) > 0:
             return " ".join(
-                data["document"]["tokens"]["token"][data["annotations"]["short_answers"][0]["start_token"][0]:
-                                                    data["annotations"]["short_answers"][0]["end_token"][0]])
+                data["document"]["tokens"]["token"][
+                    data["annotations"]["short_answers"][0]["start_token"][0] : data[
+                        "annotations"
+                    ]["short_answers"][0]["end_token"][0]
+                ]
+            )
         elif data["annotations"]["long_answer"][0]["start_token"] != -1:
-            return " ".join(data["document"]["tokens"]["token"][data["annotations"]["long_answer"][0]["start_token"]:
-                                                                data["annotations"]["long_answer"][0]["end_token"]])
+            return " ".join(
+                data["document"]["tokens"]["token"][
+                    data["annotations"]["long_answer"][0]["start_token"] : data[
+                        "annotations"
+                    ]["long_answer"][0]["end_token"]
+                ]
+            )
         elif data["annotations"]["yes_no_answer"] != "NONE":
             return data["annotations"]["yes_no_answer"]
         else:
@@ -38,14 +57,36 @@ class NaturalQuestionsBenchmark(Benchmark):
 
             question = data["question"]["text"]
 
-            data = {"question": question, "gold": self.__extract_answer(data)}
+            data = {
+                "id": data["id"],
+                "question": question,
+                "gold": self.__extract_answer(data),
+            }
 
             if self.use_context:
-                context_list: list[Path] = super().ranked_entities_statements(question, hops=self.hops)
+                if self.context_path is not None:
+                    with open(self.context_path, "rt") as fp:
+                        all_context: dict[str, Any] = json.load(fp)
 
-                context: str = reduce(lambda s1, s2: f"{s1}\n{s2}",
-                                      set(map(lambda e: e.verbalized, context_list))) \
-                    if len(context_list) > 0 else ""
+                        if all_context["config"]["hops"] != self.hops:
+                            raise Exception(
+                                "Context file have a different number of hops"
+                            )
+
+                        context: str = all_context[data["id"]]["context"]
+                else:
+                    context_list: list[Path] = super().ranked_entities_statements(
+                        question, hops=self.hops
+                    )
+
+                    context: str = (
+                        reduce(
+                            lambda s1, s2: f"{s1}\n{s2}",
+                            set(map(lambda e: e.verbalized, context_list)),
+                        )
+                        if len(context_list) > 0
+                        else ""
+                    )
 
                 data["context"] = context
 
@@ -57,21 +98,10 @@ class NaturalQuestionsBenchmark(Benchmark):
 
         Dir(self.output_path).mkdir(parents=True, exist_ok=True)
 
-        use_comma: bool = False
+        data: dict[str, Any] = {"config": {"hops": self.hops}}
 
-        with open(self.output_path + "/data.json", "a") as fp:
-            fp.write('[')
+        for result in self.data():
+            data[result["id"]] = {"id": result["id"], "context": result["context"]}
 
-            json.dump({"context": self.use_context, "hops": self.hops}, fp)
-
-            fp.write(',')
-
-            for result in self.data():
-                if use_comma:
-                    fp.write(',')
-
-                json.dump(result, fp)
-
-                use_comma = True
-
-            fp.write(']')
+        with open(self.output_path + "/data.json", "w") as fp:
+            json.dump(data, fp)
