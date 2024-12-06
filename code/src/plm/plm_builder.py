@@ -13,6 +13,7 @@ class Device(Enum):
 
 class PLMBuilder:
     model_id: Optional[str] = None
+    model_name: str
     device: Device = Device.GPU
     __input_formatter: Callable[[str, str], object]
 
@@ -25,13 +26,20 @@ class PLMBuilder:
     def set_input_formatter(self, formatter: Callable[[str, str], object]):
         self.__input_formatter = formatter
 
+    def set_model_name(self, name: str):
+        self.model_name = name
+
     def build(self) -> PLM:
         if self.model_id is None:
             raise AttributeError
 
-        pipe = pipeline("text-generation", model=self.model_id, model_kwargs={"torch_dtype": torch.bfloat16},
-                        device=self.device.value)
+        pipe = pipeline(
+            "text-generation",
+            model=self.model_id,
+            model_kwargs={"torch_dtype": torch.bfloat16},
+            device=self.device.value,
+        )
 
         pipe.tokenizer.pad_token_id = pipe.tokenizer.eos_token_id
 
-        return PLM(pipe, self.__input_formatter)
+        return PLM(pipe, self.__input_formatter, self.model_name)
