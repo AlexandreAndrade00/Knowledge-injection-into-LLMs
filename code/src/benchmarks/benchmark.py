@@ -18,6 +18,7 @@ class Benchmark(ABC, KnowledgeMixin):
     use_context: bool
     output_path: str
     hops: int
+    k: int
     context_path: Optional[str]
     __text_sim_model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -29,11 +30,13 @@ class Benchmark(ABC, KnowledgeMixin):
         hops: int,
         data_origin: DataOrigin,
         context_path: str,
+        k: int,
     ):
         self.model = model
         self.runs = runs
         self.use_context = use_context
         self.hops = hops
+        self.k = k
         self.context_path = context_path
         if context_path is None:
             super().__init__(data_origin)
@@ -46,6 +49,12 @@ class Benchmark(ABC, KnowledgeMixin):
 
     def set_runs(self, runs: int) -> None:
         self.runs = runs
+
+    def set_hops(self, hops: int) -> None:
+        self.hops = hops
+
+    def set_k(self, k: int) -> None:
+        self.k = k
 
     @abstractmethod
     def data(self) -> Iterable[dict[str, str]]:
@@ -60,7 +69,7 @@ class Benchmark(ABC, KnowledgeMixin):
             raise Exception("Output path not set")
 
         Path(self.output_path).mkdir(parents=True, exist_ok=True)
-        with open(self.output_path + "/results.json", "w") as fp:
+        with open(self.output_path + "/" + self.__output_file_name(), "w") as fp:
             fp.write("[")
 
         use_comma: bool = False
@@ -70,7 +79,7 @@ class Benchmark(ABC, KnowledgeMixin):
             self.__write_to_file(result, use_comma)
             use_comma = True
 
-        with open(self.output_path + "/results.json", "a") as fp:
+        with open(self.output_path + "/" + self.__output_file_name(), "a") as fp:
             fp.write("]")
 
     def evaluate(self, data: dict) -> None:
@@ -100,8 +109,11 @@ class Benchmark(ABC, KnowledgeMixin):
 
     def __write_to_file(self, result: dict[str, str], use_comma: bool):
         # print(result, flush=True)
-        with open(self.output_path + "/results.json", "a") as fp:
+        with open(self.output_path + "/" + self.__output_file_name(), "a") as fp:
             if use_comma:
                 fp.write(",")
 
             json.dump(result, fp)
+
+    def __output_file_name(self):
+        return f"{self.model.model_name}-{'context' if self.use_context else 'no_context'}-hop_{self.hops}-k_{self.k}.json"

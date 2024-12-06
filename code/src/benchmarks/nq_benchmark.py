@@ -16,12 +16,13 @@ class NaturalQuestionsBenchmark(Benchmark):
         self,
         model: PLM,
         context_path: Optional[str],
-        runs: int = -1,
-        use_context: bool = True,
-        hops: int = 1,
+        runs: int,
+        use_context: bool,
+        hops: int = None,
+        k: int = None,
         data_origin: DataOrigin = DataOrigin.SPARQL,
     ):
-        super().__init__(model, runs, use_context, hops, data_origin, context_path)
+        super().__init__(model, runs, use_context, hops, data_origin, context_path, k)
         self.dataset = load_dataset("natural_questions", split="train")
 
     @staticmethod
@@ -52,9 +53,6 @@ class NaturalQuestionsBenchmark(Benchmark):
             if self.runs == 0:
                 break
 
-            if self.runs > 0:
-                super().set_runs(self.runs - 1)
-
             question = data["question"]["text"]
 
             data = {
@@ -62,6 +60,12 @@ class NaturalQuestionsBenchmark(Benchmark):
                 "question": question,
                 "gold": self.__extract_answer(data),
             }
+
+            if data["gold"] == [-1]:
+                continue
+
+            if self.runs > 0:
+                super().set_runs(self.runs - 1)
 
             if self.use_context:
                 if self.context_path is not None:
@@ -76,7 +80,7 @@ class NaturalQuestionsBenchmark(Benchmark):
                         context: str = all_context[data["id"]]["context"]
                 else:
                     context_list: list[Path] = super().ranked_entities_statements(
-                        question, hops=self.hops
+                        question, hops=self.hops, k=self.k
                     )
 
                     context: str = (
