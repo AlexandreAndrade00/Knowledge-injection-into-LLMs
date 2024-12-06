@@ -42,6 +42,13 @@ class KnowledgeMixin:
     __text_sim_model = SentenceTransformer(
         "all-MiniLM-L6-v2", model_kwargs={"torch_dtype": "bfloat16"}
     )
+    __entity_cache: dict[str, list[Path]] = {}
+    __refined: Refined = Refined.from_pretrained(
+        model_name="wikipedia_model",
+        entity_set="wikipedia",
+        device="cuda:0",
+        use_precomputed_descriptions=True,
+    )
 
     def __init__(self, data_origin: DataOrigin):
         self.__data_origin = data_origin
@@ -49,15 +56,11 @@ class KnowledgeMixin:
         if data_origin.name == DataOrigin.LOCAL.name:
             self.__mapping = orjson.loads(open(self.__mapping_path).read())
 
-    def ranked_entities_statements(self, question: str, hops: int) -> list[Path]:
-        __refined: Refined = Refined.from_pretrained(
-            model_name="wikipedia_model",
-            entity_set="wikipedia",
-            device="cuda:0",
-            use_precomputed_descriptions=True,
-        )
+    def ranked_entities_statements(
+        self, question: str, hops: int, k: int
+    ) -> list[Path]:
 
-        spans = __refined.process_text(question)
+        spans = self.__refined.process_text(question)
 
         entities_to_query: list[Entity] = []
         entities_ids_visited: list[str] = []
@@ -112,7 +115,7 @@ class KnowledgeMixin:
                     entities_to_query.append(triple.entities[0])
                     entities_ids_visited.append(triple.entities[0].id)
 
-        final_ranking = self.k_similar_triples(question, ranked, k=10)
+        final_ranking = self.k_similar_triples(question, ranked, k=k)
 
         return final_ranking
 
@@ -165,6 +168,9 @@ class KnowledgeMixin:
         return ranked_triples[-k:]
 
     def get_entity_claims_sqarql(self, entity: Entity) -> list[Path]:
+        if entity.id in self.__entity_cache:
+            return self.__entity_cache[entity.id]
+
         wikidataSPARQL = SPARQLWrapper(
             self.__wikidata_sparql_endpoint, agent="QAChatBot/0.1"
         )
@@ -265,6 +271,8 @@ class KnowledgeMixin:
                 )
             )
 
+        self.__entity_cache[entity.id] = triples
+
         return triples
 
     def get_entity_claims_local(self, entity: Entity) -> list[Path]:
@@ -272,6 +280,9 @@ class KnowledgeMixin:
         if entity.id is None:
             print(entity)
             return []
+
+        if entity.id in self.__entity_cache:
+            return self.__entity_cache[entity.id]
 
         entity_json = self.get_entity_json_by_id(entity.id)
 
@@ -347,6 +358,8 @@ class KnowledgeMixin:
                         ),
                     )
                 )
+
+        self.__entity_cache[entity.id] = paths
 
         return paths
 
